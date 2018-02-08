@@ -1,0 +1,30 @@
+﻿@model AvtoShop.DataLayer.Common.EntityExtension<int>
+
+@using (Html.BeginForm("Edit", "Fuel", FormMethod.Post, new { id = "frm" + @Model.Id, @class = "myform form-horizontal" }))
+{
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    <div class="row btn-group-sm">
+        <div class="col-lg-4 col-md-4">
+            @*<label asp-for="FuelName" class="control-label"></label>*@
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <button type="button" data-id="@Model.Id" class="btn btn-primary mybtnsave">
+            <span class="glyphicon glyphicon-save"></span>
+
+            зберегти
+        </button>
+
+        <button type="button" data-id="@Model.Id" class="btn btn-danger  mybtncancel ">
+            <span class="glyphicon glyphicon-minus" style="font-size:x-small"></span>
+            відмінити
+        </button>
+
+    </div>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

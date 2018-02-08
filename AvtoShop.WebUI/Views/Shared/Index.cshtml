@@ -1,0 +1,113 @@
+﻿@model IEnumerable<AvtoShop.DataLayer.Common.EntityExtension<int>>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<div class="container-fluid popover-content">
+    <div class="row btn-group-sm">
+        <button type="button" data-id="0" class="btn btn-success btn-mini btnnew text-right">
+            <span class="glyphicon glyphicon-plus"></span>
+            Add
+        </button>
+
+    </div>
+</div>
+
+<div class="row editnew btn-group-sm" style="padding-left:40px" data-edit-id="0">
+</div>
+
+@foreach (var item in Model)
+{
+    <div class="container-fluid" style="cursor: pointer;">
+        <div class="row  myinfo btn-group-sm" data-view-id="@item.Id">
+            <div class="col-lg-4 col-md-4" data-text-id="@item.Id">@item.Name</div>
+            <button type="button" data-id="@item.Id" class="btn btn-primary mybtnedit">
+                <span class="glyphicon glyphicon-edit"></span>
+
+                Edit
+            </button>
+
+            <button type="button" data-id="@item.Id" class="btn btn-danger  mybtndelete ">
+                <span class="glyphicon glyphicon-minus" style="font-size:x-small"></span>
+                Delete
+            </button>
+
+
+
+        </div>
+        <div class="row myedit btn-group-sm" style=" padding-top:5px; padding-left:40px" data-edit-id="@item.Id">
+
+        </div>
+
+    </div>
+}
+
+
+@section Scripts
+    {
+    <script type="text/javascript">
+        $(function () {
+            $('body').on('click', '.btnnew',
+                function () {
+                    var id = $(this).attr("data-id")
+                   //var url = '/' ++'/Edit';
+                    $('[data-edit-id="' + id + '"]').load('/@ViewBag.Path/Edit/');
+                });
+
+
+            $('body').on('click', '.mybtncancel', function () {
+                var id = $(this).attr("data-id");
+                $('[data-edit-id="' + id + '"]').empty();
+            });
+            $('body').on('click', '.mybtnedit',
+                function () {
+                    var id = $(this).attr("data-id");
+                    $('[data-edit-id="' + id + '"]').load('/@ViewBag.Path/Edit/' + id);
+                });
+
+            $('body').on('click', '.mybtnsave', function () {
+                var id = $(this).attr("data-id");
+
+                var myfrm = "frm" + id;
+                var frm = $('#' + myfrm);
+                var frmdata = frm.serialize();
+                $.post("/@ViewBag.Path/Edit/", frmdata,
+                    function (data) {
+                        if (data == "OK") {
+                            window.location.href = '/@ViewBag.Path/Index';
+                        }
+
+
+                    });
+            });
+        });
+
+
+    $(function(){
+
+        $('.mybtndelete').click(function (e) {
+                e.preventDefault();//отменяется переход по ссылке. Клик не работает.
+                if (confirm('You delete record?')) {
+
+                    var id = $(this).attr("data-id");
+                    Delete(id);
+                    //return true;// выполняется переход по ссылке <a href="/Manufacturer/Delete/3">Delete</a>
+                }
+            });
+        });
+
+     function Delete(id) {
+            $.ajax({
+                url: '/@ViewBag.Path/Delete/'+id,
+                type: 'Post'
+            }).success(function (result) {
+                //tbl.empty().append(result);
+                window.location.href = '/@ViewBag.Path/Index/';
+            }).error(function (e) {
+                alert(e);
+            });
+        }
+    </script>
+}

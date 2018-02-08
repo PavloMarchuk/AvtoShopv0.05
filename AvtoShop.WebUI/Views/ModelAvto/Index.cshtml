@@ -1,0 +1,47 @@
+﻿@model IEnumerable<AvtoShop.WebUI.Models.ViewModelModelAvto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ModelAvtoId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BrandName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ModelName)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModelAvtoId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BrandName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModelName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.ModelAvtoId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ModelAvtoId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ModelAvtoId }) 
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,80 @@
+﻿@model IEnumerable<AvtoShop.DataLayer.DbLayer.Fuel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Edit">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>*@
+                <th>
+                    @Html.DisplayNameFor(model => model.FuelName)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.FuelName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new {  id=item.Id  }) |
+                
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "mybtndelete", data_id= @item.Id })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@section Scripts
+    {
+    <script type="text/javascript">
+    $(function(){
+     // $('.mybtndelete').click(function(e){
+     //       if(confirm('You delete record?'))
+     //       {
+     //           return true;// выполняется переход по ссылке <a href="/Manufacturer/Delete/3">Delete</a>
+     //       }
+     //       else
+     //       {
+     //           e.preventDefault();//отменяется переход по ссылке. Клик не работает.
+     //       }
+     //    });
+     //});
+        $('.mybtndelete').click(function (e) {
+                e.preventDefault();//отменяется переход по ссылке. Клик не работает.
+                if (confirm('You delete record?')) {
+
+                    var id = $(this).attr("data-id");
+                    Delete(id);
+                    //return true;// выполняется переход по ссылке <a href="/Manufacturer/Delete/3">Delete</a>
+                }
+            });
+        });
+
+     function Delete(id) {
+            $.ajax({
+                url: '/Fuel/Delete/'+id,
+                type: 'Post'
+            }).success(function (result) {
+                //tbl.empty().append(result);
+                window.location.href = '/Fuel/Index/';
+            }).error(function (e) {
+                alert(e);
+            });
+        }
+    </script>
+}
